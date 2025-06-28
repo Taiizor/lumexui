@@ -55,14 +55,14 @@ jobs:
             - name: Login to Azure
               uses: azure/login@v2
               with:
-                  client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AE23C767A44848FE995578A1C037403D }}
-                  tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_43E73B5325A2495B9E40E95184EE9EDE }}
-                  subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9DD2FEFA18374E8484A5B85D9F23348C }}
+                  client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4F8D500C06394F92904A16E943E7F5E3 }}
+                  tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0F326C2391164EEBA2D094D498AAF1B4 }}
+                  subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_EF211173BDA84F60923C6228CADA533F }}
 
             - name: Deploy to Azure Web App
               id: deploy-to-webapp
               uses: azure/webapps-deploy@v3
               with:
-                  app-name: "lumexui"
+                  app-name: "lumexui-v2"
                   slot-name: "Production"
                   package: .
