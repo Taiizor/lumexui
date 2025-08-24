@@ -1,0 +1,121 @@
+﻿@page "/docs/components/alert"
+@layout DocsContentLayout
+
+@using LumexUI.Docs.Client.Pages.Components.Alert.PreviewCodes
+
+<DocsSection Title="Usage">
+    <Usage />
+
+    <LumexAlert Radius="@Radius.Large" Class="my-6">
+        <DescriptionContent>
+            When both <code>Title</code> and <code>TitleContent</code> are provided, <code>TitleContent</code> takes precedence.
+        </DescriptionContent>
+    </LumexAlert>
+
+    <DocsSection Title="Radius">
+        <p>Use <code>Radius</code> parameter to control the border radius of the alert.</p>
+        <Radii />
+    </DocsSection>
+
+    <DocsSection Title="Colors">
+        <p>Use <code>Color</code> parameter to set the color of the alert.</p>
+        <Colors />
+    </DocsSection>
+
+    <DocsSection Title="Variants">
+        <p>Use <code>Variant</code> parameter to change the visual style of the alert.</p>
+        <Variants />
+    </DocsSection>
+
+    <DocsSection Title="Custom Icon">
+        <p>
+            By default, the alert displays an appropriate icon based on the <code>Color</code> parameter.
+            Use <code>Icon</code> parameter to replace the default icon with a custom one.
+        </p>
+        <CustomIcon />
+    </DocsSection>
+
+    <DocsSection Title="Hide Icon">
+        <p>Use <code>HideIcon</code> parameter to hide the icon entirely.</p>
+        <HideIcon />
+    </DocsSection>
+
+    <DocsSection Title="Closeable">
+        <p>Use <code>Closeable</code> or <code>OnClose</code> parameters to add a close button to dismiss the alert.</p>
+        <Closeable />
+    </DocsSection>
+
+    <DocsSection Title="End Content">
+        <p>Use <code>EndContent</code> parameter to add additional content at the end of the alert, such as actions.</p>
+        <EndContent />
+    </DocsSection>
+
+    <DocsSection Title="Two-way Data Binding">
+        <p>
+            Use <code>@@bind-Visible</code> directive or <code>Visible</code> and <code>VisibleChanged</code>
+            parameters to manually control alert visibility.
+        </p>
+        <TwoWayDataBinding />
+    </DocsSection>
+</DocsSection>
+
+<DocsSection Title="Custom Styles">
+    <div>
+        <h4 class="font-semibold">Alert</h4>
+        <ul>
+            <li><code>Class</code>: The CSS class names to style the alert wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the alert slots.</li>
+        </ul>
+    </div>
+    <CustomStyles />
+</DocsSection>
+
+<DocsApiSection Components="@_apiComponents" />
+
+@code {
+    [CascadingParameter] private DocsContentLayout Layout { get; set; } = default!;
+
+    private readonly Heading[] _headings = new Heading[]
+    {
+        new("Usage", [
+            new("Radius"),
+            new("Colors"),
+            new("Variants"),
+            new("Custom Icon"),
+            new("Hide Icon"),
+            new("Closeable"),
+            new("End Content"),
+            new("Two-way Data Binding"),
+        ]),
+        new("Custom Styles"),
+        new("API")
+    };
+
+    private readonly Slot[] _slots = new Slot[]
+    {
+        new(nameof(AlertSlots.Base), "The base container of the alert component."),
+        new(nameof(AlertSlots.MainWrapper), "The wrapper for the alert title and description content."),
+        new(nameof(AlertSlots.Title), "The alert title element."),
+        new(nameof(AlertSlots.Description), "The alert description element."),
+        new(nameof(AlertSlots.CloseButton), "The alert close button element."),
+        new(nameof(AlertSlots.IconWrapper), "The wrapper for the alert icon."),
+        new(nameof(AlertSlots.Icon), "The alert icon element.")
+    };
+
+    private readonly string[] _apiComponents = new string[]
+    {
+        nameof(LumexAlert),
+        nameof(LumexButton)
+    };
+
+    protected override void OnInitialized()
+    {
+        Layout.Initialize(
+            title: "Alert",
+            category: "Components",
+            description: "Alerts display concise feedback about an action or event for the user.",
+            headings: _headings,
+            linksProps: new ComponentLinksProps( "Alert", isServer: false )
+        );
+    }
+}

@@ -51,7 +51,8 @@ internal readonly record struct AccordionItem
         .Add( "gap-3" )
         .Add( "w-full" )
         .Add( "items-center" )
-        .Add( "outline-none" )
+        .Add( "outline-hidden" )
+        .Add( "cursor-pointer" )
         .ToString();
 
     private readonly static string _startContent = ElementClass.Empty()
@@ -67,7 +68,6 @@ internal readonly record struct AccordionItem
 
     private readonly static string _title = ElementClass.Empty()
         .Add( "text-foreground" )
-        .Add( "text-large" )
         .ToString();
 
     private readonly static string _subtitle = ElementClass.Empty()
@@ -98,8 +98,8 @@ internal readonly record struct AccordionItem
         return ElementClass.Empty()
             .Add( _base )
             .Add( _disabled, when: accordionItem.GetDisabledState() )
-            .Add( accordion.ItemClasses?.Root )
-            .Add( accordionItem.Classes?.Root )
+            .Add( accordion.ItemClasses?.Base )
+            .Add( accordionItem.Classes?.Base )
             .Add( accordionItem.Class )
             .ToString();
     }

@@ -31,7 +31,7 @@ internal static class Popover
 					.ToString(),
 
 				["Wrapper"] = new ElementClass()
-					.Add( "animate-appearance-in" )
+					.Add( "animate-enter" )
 					.ToString(),
 
 				[nameof( PopoverSlots.Content )] = new ElementClass()
@@ -46,7 +46,12 @@ internal static class Popover
 					.ToString(),
 
 				[nameof( PopoverSlots.Trigger )] = new ElementClass()
-					.Add( "z-10" )
+					.Add( "contents" )
+					.Add( "*:z-10" )
+					.Add( "*:cursor-pointer" )
+					.Add( "*:subpixel-antialiased" )
+					.Add( "aria-expanded:*:scale-[0.97]" )
+					.Add( "aria-expanded:*:opacity-focus" )
 					.ToString(),
 
 				[nameof( PopoverSlots.Arrow )] = new ElementClass()
@@ -55,7 +60,7 @@ internal static class Popover
 					.Add( "h-2.5" )
 					.Add( "absolute" )
 					.Add( "rotate-45" )
-					.Add( "rounded-sm" )
+					.Add( "rounded-xs" )
 					.ToString(),
 			},
 
@@ -133,6 +138,10 @@ internal static class Popover
 					[nameof( Radius.Large )] = new SlotCollection()
 					{
 						[nameof( PopoverSlots.Content )] = "rounded-large"
+					},
+					[nameof( Radius.Full )] = new SlotCollection()
+					{
+						[nameof( PopoverSlots.Content )] = "rounded-full"
 					}
 				},
 

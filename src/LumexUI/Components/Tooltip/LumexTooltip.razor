@@ -1,0 +1,35 @@
+﻿@namespace LumexUI
+@inherits LumexComponentBase
+
+<LumexPopover Open="@Open"
+              Size="@Size"
+              Color="@Color"
+              Radius="@Radius"
+              Shadow="@Shadow"
+              Offset="@Offset"
+              ShowArrow="@ShowArrow"
+              Placement="@GetPlacement()"
+              Class="@Class"
+              Classes="@Classes"
+              Style="@Style"
+              role="tooltip"
+              @attributes="@AdditionalAttributes">
+    <LumexPopoverTrigger aria-expanded="@null"
+                         @onclick="@OnClickAsync"
+                         @onmouseenter="@OnMouseEnterAsync"
+                         @onmouseleave="@OnMouseLeaveAsync"
+                         @onfocusin="@OnFocusInAsync"
+                         @onfocusout="@OnFocusOutAsync">
+        @ChildContent
+    </LumexPopoverTrigger>
+    <LumexPopoverContent>
+        @if( Content is RenderFragment renderFragment )
+        {
+            @renderFragment
+        }
+        else
+        {
+            @Content
+        }
+    </LumexPopoverContent>
+</LumexPopover>

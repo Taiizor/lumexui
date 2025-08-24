@@ -1,0 +1,76 @@
+﻿@namespace LumexUI
+@inherits LumexComponentBase
+
+@using S = AvatarSlots;
+
+@if( Context is null || _isCounter )
+{
+    @_render
+}
+else
+{
+    Context.Register( this );
+}
+
+@code {
+    internal void Render( RenderTreeBuilder __builder )
+    {
+        <LumexComponent As="@As"
+                        Class="@GetStyles(nameof(S.Base))"
+                        Style="@Style"
+                        data-component="avatar"
+                        data-slot="base"
+                        @attributes="@AdditionalAttributes">
+            @if( !string.IsNullOrEmpty( Src ) )
+            {
+                <img src="@Src"
+                     alt="@Alt"
+                     class="@GetStyles( nameof( S.Img ) )"
+                     data-slot="img"
+                     data-loaded="@_imageLoaded.ToAttributeValue()"
+                     @ref="@_ref" />
+            }
+
+            @_renderFallback
+        </LumexComponent>
+    }
+
+    private void RenderFallback( RenderTreeBuilder __builder )
+    {
+        if( !_showFallback )
+        {
+            return;
+        }
+
+        if( FallbackContent is not null )
+        {
+            <div role="img"
+                 class="@GetStyles( nameof( S.Fallback ) )"
+                 data-slot="fallback"
+                 aria-label="@Alt">
+                @FallbackContent
+            </div>
+
+            return;
+        }
+
+        if( !string.IsNullOrEmpty( Name ) )
+        {
+            <span role="img"
+                  class="@GetStyles( nameof( S.Name ) )"
+                  data-slot="name"
+                  aria-label="@Alt">
+                @Initials( Name )
+            </span>
+        }
+        else
+        {
+            <span role="img"
+                  class="@GetStyles( nameof( S.Icon ) )"
+                  data-slot="icon"
+                  aria-label="@Alt">
+                @IconContent
+            </span>
+        }
+    }
+}

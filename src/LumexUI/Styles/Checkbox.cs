@@ -20,7 +20,7 @@ internal readonly record struct Checkbox
         .Add( "inline-flex" )
         .Add( "items-center" )
         .Add( "justify-start" )
-        .Add( "outline-none" )
+        .Add( "outline-hidden" )
         .Add( "cursor-pointer" )
         .ToString();
 
@@ -48,7 +48,7 @@ internal readonly record struct Checkbox
         .Add( "after:scale-50" )
         .Add( "after:opacity-0" )
         .Add( "after:origin-center" )
-        .Add( "after:transition-transform-opacity" )
+        .Add( "after:transition[transform,opacity]" )
         .Add( "after:!duration-200" )
         .Add( "group-data-[checked=true]:after:scale-100" )
         .Add( "group-data-[checked=true]:after:opacity-100" )
@@ -59,11 +59,12 @@ internal readonly record struct Checkbox
         .ToString();
 
     private readonly static string _icon = ElementClass.Empty()
-        .Add( "z-10" )
-        .Add( "opacity-0" )
-        .Add( "transition-opacity" )
-        .Add( "motion-reduce:transition-none" )
-        .Add( "group-data-[checked=true]:opacity-100" )
+        .Add( "contents" )
+        .Add( "*:z-10" )
+        .Add( "*:opacity-0" )
+        .Add( "*:transition-opacity" )
+        .Add( "*:motion-reduce:transition-none" )
+        .Add( "*:group-data-[checked=true]:opacity-100" )
         .ToString();
 
     private readonly static string _label = ElementClass.Empty()
@@ -79,21 +80,21 @@ internal readonly record struct Checkbox
         .ToString();
 
     private readonly static string _radiusSmall = ElementClass.Empty()
-        .Add( "rounded-[calc(theme(borderRadius.small)*0.5)]" )
-        .Add( "before:rounded-[calc(theme(borderRadius.small)*0.5)]" )
-        .Add( "after:rounded-[calc(theme(borderRadius.small)*0.5)]" )
+        .Add( "rounded-[calc(var(--radius-small)*0.5)]" )
+        .Add( "before:rounded-[calc(var(--radius-small)*0.5)]" )
+        .Add( "after:rounded-[calc(var(--radius-small)*0.5)]" )
         .ToString();
 
     private readonly static string _radiusMedium = ElementClass.Empty()
-        .Add( "rounded-[calc(theme(borderRadius.medium)*0.5)]" )
-        .Add( "before:rounded-[calc(theme(borderRadius.medium)*0.5)]" )
-        .Add( "after:rounded-[calc(theme(borderRadius.medium)*0.5)]" )
+        .Add( "rounded-[calc(var(--radius-medium)*0.5)]" )
+        .Add( "before:rounded-[calc(var(--radius-medium)*0.5)]" )
+        .Add( "after:rounded-[calc(var(--radius-medium)*0.5)]" )
         .ToString();
 
     private readonly static string _radiusLarge = ElementClass.Empty()
-        .Add( "rounded-[calc(theme(borderRadius.large)*0.5)]" )
-        .Add( "before:rounded-[calc(theme(borderRadius.large)*0.5)]" )
-        .Add( "after:rounded-[calc(theme(borderRadius.large)*0.5)]" )
+        .Add( "rounded-[calc(var(--radius-large)*0.5)]" )
+        .Add( "before:rounded-[calc(var(--radius-large)*0.5)]" )
+        .Add( "after:rounded-[calc(var(--radius-large)*0.5)]" )
         .ToString();
 
     private static ElementClass GetColorStyles( ThemeColor color )
@@ -129,9 +130,9 @@ internal readonly record struct Checkbox
         else if( slot == "icon" )
         {
             return ElementClass.Empty()
-                .Add( "w-3 h-2", when: size is Size.Small )
-                .Add( "w-4 h-3", when: size is Size.Medium )
-                .Add( "w-5 h-4", when: size is Size.Large );
+                .Add( "*:w-3 *:h-2", when: size is Size.Small )
+                .Add( "*:w-4 *:h-3", when: size is Size.Medium )
+                .Add( "*:w-5 *:h-4", when: size is Size.Large );
         }
         else // part == "label"
         {
@@ -149,8 +150,8 @@ internal readonly record struct Checkbox
         return ElementClass.Empty()
             .Add( _base )
             .Add( _disabled, when: checkbox.GetDisabledState() )
-            .Add( checkboxGroup?.CheckboxClasses?.Root )
-            .Add( checkbox.Classes?.Root )
+            .Add( checkboxGroup?.CheckboxClasses?.Base )
+            .Add( checkbox.Classes?.Base )
             .Add( checkbox.Class )
             .ToString();
     }
@@ -224,7 +225,7 @@ internal readonly record struct CheckboxGroup
     {
         return ElementClass.Empty()
             .Add( _base )
-            .Add( checkboxGroup.Classes?.Root )
+            .Add( checkboxGroup.Classes?.Base )
             .Add( checkboxGroup.Class )
             .ToString();
     }

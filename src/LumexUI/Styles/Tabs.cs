@@ -40,7 +40,6 @@ internal class Tabs
 		.Add( "py-1" )
 		.Add( "justify-center" )
 		.Add( "items-center" )
-		.Add( "outline-none" )
 		.Add( "cursor-pointer" )
 		.Add( "data-[disabled=true]:!opacity-disabled" )
 		.Add( "data-[disabled=true]:cursor-not-allowed" )
@@ -65,7 +64,6 @@ internal class Tabs
 	private static readonly string _tabPanel = ElementClass.Empty()
 		.Add( "px-1" )
 		.Add( "py-3" )
-		.Add( "outline-none" )
 		// focus ring
 		.Add( Utils.FocusVisible )
 		.ToString();
@@ -80,11 +78,11 @@ internal class Tabs
 	{
 		return new TabsSlots()
 		{
-			Root = twMerge.Merge(
+			Base = twMerge.Merge(
 				ElementClass.Empty()
 					.Add( _base )
 					.Add( GetFullWidthStyles( tabs.FullWidth, slot: nameof( _base ) ) )
-					.Add( tabs.Classes?.Root )
+					.Add( tabs.Classes?.Base )
 					.Add( tabs.Class )
 					.ToString() ),
 
@@ -140,7 +138,7 @@ internal class Tabs
 				.Add( "inset-0", when: slot is nameof( _cursor ) ),
 
 			TabVariant.Outlined => ElementClass.Empty()
-				.Add( "bg-transparent border-2 border-default-200 shadow-sm", when: slot is nameof( _tabList ) )
+				.Add( "bg-transparent border-2 border-default-200 shadow-xs", when: slot is nameof( _tabList ) )
 				.Add( "inset-0", when: slot is nameof( _cursor ) ),
 
 			TabVariant.Underlined => ElementClass.Empty()
@@ -202,6 +200,11 @@ internal class Tabs
 				.Add( "rounded-medium", when: slot is nameof( _tab ) )
 				.Add( "rounded-medium", when: slot is nameof( _cursor ) ),
 
+			Radius.Full => ElementClass.Empty()
+				.Add( "rounded-full", when: slot is nameof( _tabList ) )
+				.Add( "rounded-full", when: slot is nameof( _tab ) )
+				.Add( "rounded-full", when: slot is nameof( _cursor ) ),
+
 			_ => ElementClass.Empty()
 		};
 	}
@@ -236,7 +239,7 @@ internal class Tabs
 			// solid / outlined / light && color
 
 			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Default ) => ElementClass.Empty()
-				.Add( "bg-background shadow-small", when: slot is nameof( _cursor ) )
+				.Add( "bg-background dark:bg-default shadow-small", when: slot is nameof( _cursor ) )
 				.Add( "group-data-[selected=true]:text-default-foreground", when: slot is nameof( _tabContent ) ),
 
 			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Primary ) => ElementClass.Empty()

@@ -1,16 +1,14 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
-@if (Popover.Opened)
+@if( Popover.Open )
 {
-    <div class="@Popover.Slots["Wrapper"]()"
-         style="position: absolute; z-index: 10000;"
-         data-popover="@Popover.Id"
-         @onclickoutside="@(async() => await ClickOutsideAsync())">
+    <PopoverWrapper Class="@Popover.Slots["Wrapper"]()">
         <div role="dialog"
-             class="@Popover.Slots["Base"](Popover.Classes?.Base, Popover.Class)"
+             class="@Popover.Slots["Base"]( Popover.Classes?.Base, Popover.Class )"
              tabindex="-1"
              data-slot="base"
+             data-open="@Popover.Open.ToAttributeValue()"
              @attributes="@Popover.AdditionalAttributes">
             <LumexComponent As="@As"
                             Class="@Popover.Slots["Content"](Popover.Classes?.Content, Class)"
@@ -19,11 +17,19 @@
                             @attributes="@AdditionalAttributes">
                 @ChildContent
             </LumexComponent>
-            @if (Popover.ShowArrow)
+
+            @if( Popover.ShowArrow )
             {
-                <span class="@Popover.Slots["Arrow"](Popover.Classes?.Arrow)"
+                <span class="@Popover.Slots["Arrow"]( Popover.Classes?.Arrow )"
                       data-slot="arrow" />
             }
         </div>
-    </div>
+    </PopoverWrapper>
+
+    @if( !Popover.IsTooltip )
+    {
+        <div style="z-index: 9999; position: fixed; inset: 0; background-color: transparent;"
+             data-popover-overlay="@Popover.Id"
+             @onclick="@Popover.CloseAsync" />
+    }
 }

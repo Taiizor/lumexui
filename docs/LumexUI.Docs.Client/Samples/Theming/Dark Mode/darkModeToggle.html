@@ -1,0 +1,26 @@
+<pre class="line-numbers"><code class="language-razor">@using LumexUI.Shared.Icons
+
+@inject ThemeService ThemeService
+
+&lt;LumexDropdown Placement=&quot;@PopoverPlacement.BottomEnd&quot;
+               Class=&quot;min-w-32&quot;&gt;
+    &lt;LumexDropdownTrigger&gt;
+        &lt;LumexButton Variant=&quot;@Variant.Outlined&quot;
+                     Class=&quot;min-w-10 w-10 h-10 p-0&quot;&gt;
+            &lt;MoonIcon Size=&quot;20&quot; class=&quot;hidden dark:block&quot; /&gt;
+            &lt;SunIcon Size=&quot;20&quot; class=&quot;dark:hidden&quot; /&gt;
+        &lt;/LumexButton&gt;
+    &lt;/LumexDropdownTrigger&gt;
+    &lt;LumexDropdownMenu Variant=&quot;@MenuVariant.Flat&quot;&gt;
+        &lt;LumexDropdownItem OnClick=&quot;@(async () =&gt; await ThemeService.SetThemeAsync( Theme.Light ))&quot;&gt;
+            Light
+        &lt;/LumexDropdownItem&gt;
+        &lt;LumexDropdownItem OnClick=&quot;@(async () =&gt; await ThemeService.SetThemeAsync( Theme.Dark ))&quot;&gt;
+            Dark
+        &lt;/LumexDropdownItem&gt;
+        &lt;LumexDropdownItem OnClick=&quot;@(async () =&gt; await ThemeService.SetThemeAsync( Theme.System ))&quot;&gt;
+            System
+        &lt;/LumexDropdownItem&gt;
+    &lt;/LumexDropdownMenu&gt;
+&lt;/LumexDropdown&gt;
+</code></pre>

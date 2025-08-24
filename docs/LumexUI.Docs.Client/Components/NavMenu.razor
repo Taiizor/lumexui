@@ -17,7 +17,6 @@
     {
         <li>
             <div class="flex items-center gap-2 mb-3 text-foreground">
-                <LumexIcon Icon="@category.Icon" Size="@new("20")" />
                 <h5 class="text-foreground-900 font-semibold">
                     @category.Name
                 </h5>
@@ -40,7 +39,7 @@
             <li>
                 <LumexLink Href="@($"docs/api/{formattedName.ToKebabCase()}")"
                            Match="@NavLinkMatch.Prefix"
-                           Class="block border-l pl-4 -ml-px border-transparent text-foreground hover:border-foreground-400 data-[active=true]:text-orange-500 data-[active=true]:border-current">
+                           Class="block border-l pl-4 -ml-px border-transparent text-foreground hover:border-foreground-400 data-[active=true]:text-orange-500 data-[active=true]:border-current/80 dark:data-[active=true]:text-orange-400">
                     @item.Name.Replace( "Lumex", "" )
                 </LumexLink>
             </li>
@@ -50,13 +49,13 @@
             var styles = ElementClass.Default( "flex items-center gap-2" )
                 .Add( ElementClass.Empty()
                     .Add( "opacity-disabled" )
-                    .Add( "pointer-events-none" ), when: item.Status.HasValue && item.Status.Value is ComponentStatus.Soon )
+                    .Add( "pointer-events-none" ), when: item.Status.HasValue && item.Status.Value is PageStatus.Soon )
                 .ToString();
 
             <li class="@styles">
                 <LumexLink Href="@($"docs/{categoryName.ToKebabCase()}/{formattedName.ToKebabCase()}")"
                            Match="@NavLinkMatch.Prefix"
-                           Class="block border-l pl-4 -ml-px border-transparent text-foreground hover:border-foreground-400 data-[active=true]:text-orange-500 data-[active=true]:border-current">
+                           Class="block border-l pl-4 -ml-px border-transparent text-foreground hover:border-foreground-400 data-[active=true]:text-orange-500 data-[active=true]:border-current/80 dark:data-[active=true]:text-orange-400">
                     @formattedName
                 </LumexLink>
                 <NavItemBadge Status="@item.Status" />

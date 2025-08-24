@@ -18,19 +18,22 @@
             A disabled dropdown item is faded and does not respond to user clicks.
         </p>
         <p>
-            You can achieve this by using the <Code>Disabled</Code> parameter on a <Code>DropdownItem</Code>.
+            You can achieve this by using the <code>Disabled</code> parameter on a <code>DropdownItem</code>.
         </p>
         <Disabled />
 
         <p>
             Alternatively, you can achieve this by using the
-            <Code>DisabledItems</Code> parameter on a <Code>DropdownMenu</Code>.
+            <code>DisabledItems</code> parameter on a <code>DropdownMenu</code>.
         </p>
         <DisabledItems />
-        <Callout Variant="@CalloutVariant.Warning">
-            It's important to set a unique <Code>Id</Code> for each item, 
-            otherwise the disabled items will not work.
-        </Callout>
+
+        <LumexAlert Radius="@LumexUI.Common.Radius.Large" Color="@ThemeColor.Warning" Class="my-6 [&_code]:text-current">
+            <DescriptionContent>
+                It's important to set a unique <code>Id</code> for each item,
+                otherwise the disabled items will not work.
+            </DescriptionContent>
+        </LumexAlert>
     </DocsSection>
 
     <DocsSection Title="Colors & Variants">
@@ -91,15 +94,15 @@
     <div>
         <h4 class="font-semibold">Dropdown Menu</h4>
         <ul>
-            <li><Code>Class</Code>: The CSS class names to style the wrapper.</li>
-            <li><Code>Classes</Code>: The CSS class names to style the slots.</li>
-            <li><Code>ItemClasses</Code>: The CSS class names to style the items slots.</li>
+            <li><code>Class</code>: The CSS class names to style the wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the slots.</li>
+            <li><code>ItemClasses</code>: The CSS class names to style the items slots.</li>
         </ul>
 
         <h4 class="font-semibold">Dropdown Item</h4>
         <ul>
-            <li><Code>Class</Code>: The CSS class names to style the wrapper.</li>
-            <li><Code>Classes</Code>: The CSS class names to style the slots.</li>
+            <li><code>Class</code>: The CSS class names to style the wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the slots.</li>
         </ul>
     </div>
     <CustomStyles />
@@ -109,8 +112,8 @@
     <div>
         <h4 class="font-semibold">Dropdown</h4>
         <ul>
-            <li><Code>Class</Code></li>
-            <li><Code>Classes</Code></li>
+            <li><code>Class</code></li>
+            <li><code>Classes</code></li>
         </ul>
     </div>
 </DocsSlotsSection> *@
@@ -123,6 +126,7 @@
     private readonly CompositionComponent[] _compositionComponents = new CompositionComponent[]
     {
         new(nameof(LumexDropdown), "A component that represents a dropdown, extending Popover."),
+        new(nameof(LumexDropdownTrigger), "A component that represents a dropdown trigger."),
         new(nameof(LumexDropdownMenu), "A component that represents a dropdown menu."),
         new(nameof(LumexDropdownItem), "A component that represents a dropdown item.")
     };
@@ -158,10 +162,10 @@
     private readonly string[] _apiComponents = new string[]
     {
         nameof(LumexDropdown),
+        nameof(LumexDropdownTrigger),
         nameof(LumexDropdownMenu),
         nameof(LumexDropdownItem),
-        nameof(LumexButton),
-        nameof(LumexIcon)
+        nameof(LumexButton)
     };
 
     protected override void OnInitialized()

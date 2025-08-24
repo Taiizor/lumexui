@@ -59,14 +59,14 @@
             .Add("bg-default-200/50")
             .Add("backdrop-blur-xl")
             .Add("backdrop-saturate-200")
-            .Add("hover:bg-default-200/70")
             .Add("group-data-[focus=true]:bg-default-200/85")
+            .Add("group-data-[focus=false]:hover:bg-default-200/70")
             .ToString(),
     };
 
     private ListboxItemSlots _selectItemClasses = new()
     {
-        Root = ElementClass.Empty()
+        Base = ElementClass.Empty()
             .Add("rounded-md")
             .Add("text-default-500")
             .Add("transition-opacity")
@@ -82,7 +82,7 @@
 
     private ListboxSlots _listboxClasses = new()
     {
-        Root = "[mask-image:linear-gradient(#000,#000,transparent_0,#000_40px,#000_calc(100%_-_40px),transparent)]",
+        Base = "[mask-image:linear-gradient(#000,#000,transparent_0,#000_40px,#000_calc(100%_-_40px),transparent)]",
     };
 
     private record Character(int Id, string Name, string Email, string Avatar);

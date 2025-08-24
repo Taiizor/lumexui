@@ -19,7 +19,7 @@ internal readonly record struct Switch
         .Add( "inline-flex" )
         .Add( "items-center" )
         .Add( "justify-start" )
-        .Add( "outline-none" )
+        .Add( "outline-hidden" )
         .Add( "cursor-pointer" )
         .Add( "touch-none" )
         .ToString();
@@ -55,33 +55,38 @@ internal readonly record struct Switch
         .ToString();
 
     private readonly static string _thumbIcon = ElementClass.Empty()
-        .Add( "p-0.5" )
-        .Add( "text-black" )
+        .Add( "contents" )
+        .Add( "*:p-0.5" )
+        .Add( "*:text-black" )
         .ToString();
 
     private readonly static string _startIcon = ElementClass.Empty()
-        .Add( "z-0" )
-        .Add( "absolute" )
-        .Add( "left-1.5" )
-        .Add( "text-current" )
+        .Add( "contents" )
+        .Add( "*:z-0" )
+        .Add( "*:absolute" )
+        .Add( "*:left-1.5" )
+        .Add( "*:size-[1em]" )
+        .Add( "*:text-current" )
         // transition
-        .Add( "opacity-0" )
-        .Add( "scale-50" )
-        .Add( "transition-[transform,opacity]" )
-        .Add( "group-data-[checked=true]:scale-100" )
-        .Add( "group-data-[checked=true]:opacity-100" )
+        .Add( "*:opacity-0" )
+        .Add( "*:scale-50" )
+        .Add( "*:transition-transform-opacity" )
+        .Add( "*:group-data-[checked=true]:scale-100" )
+        .Add( "*:group-data-[checked=true]:opacity-100" )
         .ToString();
 
     private readonly static string _endIcon = ElementClass.Empty()
-        .Add( "z-0" )
-        .Add( "absolute" )
-        .Add( "right-1.5" )
-        .Add( "text-default-600" )
+        .Add( "contents" )
+        .Add( "*:z-0" )
+        .Add( "*:absolute" )
+        .Add( "*:right-1.5" )
+        .Add( "*:size-[1em]" )
+        .Add( "*:text-default-600" )
         // transition
-        .Add( "opacity-100" )
-        .Add( "transition-[transform,opacity]" )
-        .Add( "group-data-[checked=true]:translate-x-3" )
-        .Add( "group-data-[checked=true]:opacity-0" )
+        .Add( "*:opacity-100" )
+        .Add( "*:transition-transform-opacity" )
+        .Add( "*:group-data-[checked=true]:translate-x-3" )
+        .Add( "*:group-data-[checked=true]:opacity-0" )
         .ToString();
 
     private readonly static string _label = ElementClass.Empty()
@@ -144,7 +149,7 @@ internal readonly record struct Switch
         return ElementClass.Empty()
             .Add( _base )
             .Add( _disabled, when: @switch.Disabled )
-            .Add( @switch.Classes?.Root )
+            .Add( @switch.Classes?.Base )
             .Add( @switch.Class )
             .ToString();
     }

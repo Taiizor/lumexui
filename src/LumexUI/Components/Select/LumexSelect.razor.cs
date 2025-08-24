@@ -147,7 +147,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
         !string.IsNullOrEmpty( ErrorMessage );
 
     private bool Filled =>
-        _isOpened ||
+        _isOpen ||
         HasValue ||
         StartContent is not null ||
         EndContent is not null ||
@@ -167,7 +167,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
     private ListboxSlots _listboxSlots = default!;
     private LumexPopover? _popoverRef;
 
-    private bool _isOpened;
+    private bool _isOpen;
     private bool _hasInitializedParameters;
 
     /// <summary>
@@ -272,7 +272,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
         Debug.Assert( _popoverRef is not null );
 
         await SetCurrentValueAsync( value );
-        await _popoverRef.HideAsync();
+        await _popoverRef.CloseAsync();
         _context.UpdateSelectedItem( CurrentValue );
     }
 
@@ -297,8 +297,8 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
     {
         return new PopoverSlots
         {
-            Root = ElementClass.Empty()
-                .Add( PopoverClasses?.Root )
+            Base = ElementClass.Empty()
+                .Add( PopoverClasses?.Base )
                 .ToString(),
 
             Content = ElementClass.Empty()
@@ -321,10 +321,10 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
     {
         return new ListboxSlots
         {
-            Root = ElementClass.Empty()
+            Base = ElementClass.Empty()
                 .Add( _slots.Listbox )
                 .Add( Classes?.Listbox )
-                .Add( ListboxClasses?.Root )
+                .Add( ListboxClasses?.Base )
                 .ToString(),
 
             List = ElementClass.Empty()

@@ -1,10 +1,14 @@
-﻿<LumexCheckbox Value="@true" Classes="@_classes">
+﻿@using LumexUI.Shared.Icons
+
+<LumexCheckbox Value="@true" Classes="@_classes">
     <div class="flex items-center gap-4">
-        <LumexIcon Icon="@Icons.Rounded.HealthAndSafety"
-                   Size="@new("32")" />
+        <ShieldPlusIcon Size="32" />
         <div>
             <div class="font-medium">Mobile Anti-Virus</div>
-            <p class="text-sm text-primary">5,07 €/month</p>
+            <div class="flex items-center gap-1.5 text-sm text-primary">
+                <span>$5,07</span>
+                <span>/ month</span>
+            </div>
         </div>
     </div>
 </LumexCheckbox>
@@ -12,7 +16,7 @@
 @code {
     private CheckboxSlots _classes = new()
     {
-        Root = ElementClass.Empty()
+        Base = ElementClass.Empty()
             .Add( "w-full max-w-md gap-2 p-4" )
             .Add( "rounded-lg border-2 border-default-100 " )
             .Add( "bg-surface1 hover:bg-surface2" )

@@ -78,8 +78,8 @@
         <p>
             The radio group component supports two-way data binding, 
             allowing you to programmatically control toggled state. 
-            You can achieve this using the <Code>@@bind-Value</Code> directive, 
-            or the <Code>Value</Code> and <Code>ValueChanged</Code> parameters.
+            You can achieve this using the <code>@@bind-Value</code> directive, 
+            or the <code>Value</code> and <code>ValueChanged</code> parameters.
         </p>
         <TwoWayDataBinding />
     </DocsSection>
@@ -88,16 +88,16 @@
 <DocsSection Title="Custom Styles">
     <DocsSlotsSection Title="Radio Group" Slots="@_radioGroupSlots">
         <ul>
-            <li><Code>Class</Code>: The CSS class names to style the radio group wrapper.</li>
-            <li><Code>Classes</Code>: The CSS class names to style the radio group slots.</li>
-            <li><Code>RadioClasses</Code>: The CSS class names to style the radio group option slots.</li>
+            <li><code>Class</code>: The CSS class names to style the radio group wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the radio group slots.</li>
+            <li><code>RadioClasses</code>: The CSS class names to style the radio group option slots.</li>
         </ul>
     </DocsSlotsSection>
 
     <DocsSlotsSection Title="Radio" Slots="@_radioSlots">
         <ul>
-            <li><Code>Class</Code>: The CSS class names to style the radio button wrapper.</li>
-            <li><Code>Classes</Code>: The CSS class names to style the radio button slots.</li>
+            <li><code>Class</code>: The CSS class names to style the radio button wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the radio button slots.</li>
         </ul>
     </DocsSlotsSection>
 
@@ -132,7 +132,7 @@
 
     private readonly Slot[] _radioGroupSlots =
     [
-        new(nameof(RadioGroupSlots.Root), "The overall container of the radio group."),
+        new(nameof(RadioGroupSlots.Base), "The overall container of the radio group."),
         new(nameof(RadioGroupSlots.Wrapper), "The wrapper for the radio buttons within the group."),
         new(nameof(RadioGroupSlots.Label), "The label associated with the radio group."),
         new(nameof(RadioGroupSlots.Description), "The description of the radio group.")
@@ -140,7 +140,7 @@
 
     private readonly Slot[] _radioSlots =
     [
-        new(nameof(RadioSlots.Root), "The main wrapper around the radio option."),
+        new(nameof(RadioSlots.Base), "The main wrapper around the radio option."),
         new(nameof(RadioSlots.ControlWrapper), "The wrapper around the visual control (the actual radio button)."),
         new(nameof(RadioSlots.Control), "The radio button control (the visual circle)."),
         new(nameof(RadioSlots.LabelWrapper), "The wrapper around the label and description."),

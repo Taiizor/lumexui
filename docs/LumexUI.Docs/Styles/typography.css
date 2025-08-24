@@ -1,0 +1,50 @@
+﻿/* Visual Studio does not support modern CSS nesting yet. */
+
+.prose {
+    max-width: none;
+}
+
+.prose-zinc {
+    --tw-prose-invert-pre-bg: var(--color-zinc-900);
+}
+
+    .prose :is(h2, h3, h4):where(:not(.not-prose, .not-prose *)) {
+        scroll-margin-top: var(--scroll-mt);
+    }
+
+    .prose :where(a):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .prose a:not(:where(:is(h2, h3, h4) *)):where(:not(.not-prose, .not-prose *)) {
+        color: var(--tw-prose-links);
+        font-weight: var(--font-weight-semibold);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: var(--color-orange-400);
+        text-decoration-thickness: 1px;
+    }
+
+    .prose a:hover:where(:not(.not-prose, .not-prose *)) {
+        text-decoration-thickness: 2px;
+    }
+
+    .prose pre:where(:not(.not-prose, .not-prose *)) {
+        display: flex;
+        padding: --spacing(5);
+        color: var(--color-zinc-100);
+    }
+
+    .prose pre:where(:is(.line-numbers)) {
+        padding-block: 1.5em;
+        padding-inline: 3.8em 1.5em;
+    }
+
+    .prose :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        border-radius: 0;
+    }
+
+    .prose :where(code[class]):not(:where([class~=not-prose],[class~=not-prose] *)):before,
+    .prose :where(code[class]):not(:where([class~=not-prose],[class~=not-prose] *)):after {
+        content: none;
+    }

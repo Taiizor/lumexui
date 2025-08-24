@@ -28,7 +28,7 @@ internal class Select
         // transition
         .Add( "will-change-auto" )
         .Add( "origin-top-left" )
-        .Add( "transition-[transform,color,left,opacity]" )
+        .Add( "transition-[transform,color,left,opacity,translate,scale]" )
         .Add( "motion-reduce:transition-none" )
         .ToString();
 
@@ -45,8 +45,9 @@ internal class Select
         .Add( "items-center" )
         .Add( "gap-3" )
         .Add( "px-3" )
-        .Add( "shadow-sm" )
-        .Add( "outline-none" )
+        .Add( "shadow-xs" )
+        .Add( "outline-hidden" )
+        .Add( "cursor-pointer" )
         // transition
         .Add( "transition-[background]" )
         .Add( "motion-reduce:transition-none" )
@@ -55,7 +56,7 @@ internal class Select
     private readonly static string _innerWrapper = ElementClass.Empty()
         .Add( "h-full" )
         .Add( "min-h-4" )
-        .Add( "w-[calc(100%_-_theme(spacing.6))]" )
+        .Add( "w-[calc(100%_-_--spacing(6))]" )
         .Add( "gap-1.5" )
         .Add( "inline-flex" )
         .Add( "items-center" )
@@ -68,9 +69,9 @@ internal class Select
         .Add( "end-3" )
         .Add( "data-[open=true]:rotate-180" )
         // transition
-        .Add( "transition-[transform,color]" )
-        .Add( "duration-150" )
-        .Add( "ease" )
+        .Add( "duration-200" )
+        .Add( "ease-out" )
+        .Add( "transition-colors-transform-opacity" )
         .Add( "motion-reduce:transition-none" )
         .ToString();
 
@@ -121,14 +122,14 @@ internal class Select
     {
         return new SelectSlots()
         {
-            Root = twMerge.Merge(
+			Base = twMerge.Merge(
                 ElementClass.Empty()
                     .Add( _base )
                     .Add( _fullWidth, when: select.FullWidth )
                     .Add( GetDisabledStyles( slot: nameof( _base ) ), when: select.Disabled )
                     .Add( GetLabelPlacementStyles( select.LabelPlacement, slot: nameof( _base ) ) )
                     .Add( GetCompoundStyles( select.LabelPlacement, select.Size, slot: nameof( _base ) ) )
-                    .Add( select.Classes?.Root )
+                    .Add( select.Classes?.Base )
                     .Add( select.Class )
                     .ToString() ),
 
@@ -140,8 +141,9 @@ internal class Select
                     .Add( GetSizeStyles( select.Size, slot: nameof( _label ) ) )
                     .Add( GetLabelPlacementStyles( select.LabelPlacement, slot: nameof( _label ) ) )
                     .Add( GetCompoundStyles( select.Variant, select.Color, slot: nameof( _label ) ) )
+					.Add( GetCompoundStyles( select.Variant, slot: nameof( _label ) ), when: select.Invalid )
                     .Add( GetCompoundStyles( select.LabelPlacement, select.Size, slot: nameof( _label ) ) )
-                    .Add( GetCompoundStyles( select.LabelPlacement, slot: nameof( _label ) ), when: select.Color is ThemeColor.Default )
+					.Add( GetCompoundStyles( select.LabelPlacement, slot: nameof( _label ) ), when: select.Color is ThemeColor.Default )
                     .Add( GetCompoundStyles( select.Size, select.Variant, slot: nameof( _label ) ), when: select.LabelPlacement is LabelPlacement.Inside )
                     .Add( select.Classes?.Label )
                     .ToString() ),
@@ -161,8 +163,8 @@ internal class Select
                     .Add( GetVariantStyles( select.Variant, slot: nameof( _trigger ) ) )
                     .Add( GetLabelPlacementStyles( select.LabelPlacement, slot: nameof( _trigger ) ) )
                     .Add( GetCompoundStyles( select.Variant, select.Color, slot: nameof( _trigger ) ) )
-                    .Add( GetCompoundStyles( select.LabelPlacement, select.Size, slot: nameof( _trigger ) ) )
                     .Add( GetCompoundStyles( select.Variant, slot: nameof( _trigger ) ), when: select.Invalid )
+                    .Add( GetCompoundStyles( select.LabelPlacement, select.Size, slot: nameof( _trigger ) ) )
                     .Add( select.Classes?.Trigger )
                     .ToString() ),
 
@@ -177,7 +179,8 @@ internal class Select
                 ElementClass.Empty()
                     .Add( _selectorIcon )
                     .Add( GetInvalidStyles( slot: nameof( _selectorIcon ) ), when: select.Invalid )
-                    .Add( select.Classes?.SelectorIcon )
+					.Add( GetCompoundStyles( select.Variant, slot: nameof( _selectorIcon ) ), when: select.Invalid )
+					.Add( select.Classes?.SelectorIcon )
                     .ToString() ),
 
             Value = twMerge.Merge(
@@ -187,7 +190,8 @@ internal class Select
                     .Add( GetSizeStyles( select.Size, slot: nameof( _value ) ) )
                     .Add( GetVariantStyles( select.Variant, slot: nameof( _value ) ) )
                     .Add( GetCompoundStyles( select.Variant, select.Color, slot: nameof( _value ) ) )
-                    .Add( select.Classes?.Value )
+					.Add( GetCompoundStyles( select.Variant, slot: nameof( _value ) ), when: select.Invalid )
+					.Add( select.Classes?.Value )
                     .ToString() ),
 
             Listbox = twMerge.Merge(
@@ -229,18 +233,15 @@ internal class Select
             InputVariant.Flat => ElementClass.Empty()
                 .Add( ElementClass.Empty()
                     .Add( "bg-default-100" )
-                    .Add( "hover:bg-default-50" )
-                    .Add( "group-data-[focus=true]:bg-default-100" )
-                    // focus ring
-                    .Add( Utils.FocusVisible ), when: slot is nameof( _trigger ) ),
+                    .Add( "group-hover:bg-default-200" ), when: slot is nameof( _trigger ) ),
 
             InputVariant.Outlined => ElementClass.Empty()
                 .Add( ElementClass.Empty()
                     .Add( "border-2" )
                     .Add( "border-default-200" )
-                    .Add( "hover:border-default-300" )
                     .Add( "data-[open=true]:border-default-foreground" )
                     .Add( "group-data-[focus=true]:border-default-foreground" )
+                    .Add( "group-data-[focus=false]:hover:border-default-400" )
                     .Add( "transition-colors" )
                     .Add( "motion-reduce:transition-none" ), when: slot is nameof( _trigger ) )
                 .Add( "group-data-[has-value=true]:text-default-foreground", when: slot is nameof( _value ) ),
@@ -320,7 +321,7 @@ internal class Select
         return labelPlacement switch
         {
             LabelPlacement.Outside => ElementClass.Empty()
-                .Add( "flex flex-col", when: slot is nameof( _base ) ), // nuzhno?
+                .Add( "flex flex-col", when: slot is nameof( _base ) ),
 
             LabelPlacement.Inside => ElementClass.Empty()
                 .Add( "cursor-pointer group-data-[filled=true]:scale-[0.85]", when: slot is nameof( _label ) )
@@ -346,9 +347,9 @@ internal class Select
     private static ElementClass GetInvalidStyles( string slot )
     {
         return ElementClass.Empty()
-            .Add( "!text-danger", when: slot is nameof( _label ) )
-            .Add( "!text-danger", when: slot is nameof( _value ) )
-            .Add( "!text-danger", when: slot is nameof( _selectorIcon ) );
+            .Add( "text-danger!", when: slot is nameof( _label ) )
+            .Add( "text-danger!", when: slot is nameof( _value ) )
+            .Add( "text-danger!", when: slot is nameof( _selectorIcon ) );
     }
 
     private static ElementClass GetCompoundStyles( InputVariant variant, ThemeColor color, string slot )
@@ -358,64 +359,55 @@ internal class Select
             // flat / color
 
             (InputVariant.Flat, ThemeColor.Default ) => ElementClass.Empty()
-                .Add( ElementClass.Empty()
-                    .Add( "bg-default-100" )
-                    .Add( "hover:bg-default-50" ), when: slot is nameof( _trigger ) )
                 .Add( "group-data-[has-value=true]:text-default-foreground", when: slot is nameof( _value ) ),
 
             (InputVariant.Flat, ThemeColor.Primary ) => ElementClass.Empty()
                 .Add( ElementClass.Empty()
-                    .Add( "bg-primary-50" )
-                    .Add( "text-primary" )
-                    .Add( "hover:bg-primary-100" )
-                    .Add( "group-data-[focus=true]:bg-primary-50" ), when: slot is nameof( _trigger ) )
-                .Add( "text-primary", when: slot is nameof( _value ) )
-                .Add( "text-primary", when: slot is nameof( _label ) ),
+					.Add( "bg-primary/20" )
+					.Add( "group-hover:bg-primary/10" )
+					.Add( "group-data-[focus=true]:bg-primary/10" ), when: slot is nameof( _trigger ) )
+                .Add( "text-primary dark:text-primary-500", when: slot is nameof( _value ) )
+                .Add( "text-primary dark:text-primary-500", when: slot is nameof( _label ) ),
 
             (InputVariant.Flat, ThemeColor.Secondary ) => ElementClass.Empty()
                 .Add( ElementClass.Empty()
-                    .Add( "bg-secondary-50" )
-                    .Add( "text-secondary" )
-                    .Add( "hover:bg-secondary-100" )
-                    .Add( "group-data-[focus=true]:bg-secondary-50" ), when: slot is nameof( _trigger ) )
-                .Add( "text-secondary", when: slot is nameof( _value ) )
-                .Add( "text-secondary", when: slot is nameof( _label ) ),
+					.Add( "bg-secondary/20" )
+					.Add( "group-hover:bg-secondary/10" )
+					.Add( "group-data-[focus=true]:bg-secondary/10" ), when: slot is nameof( _trigger ) )
+                .Add( "text-secondary dark:text-secondary-500", when: slot is nameof( _value ) )
+                .Add( "text-secondary dark:text-secondary-500", when: slot is nameof( _label ) ),
 
             (InputVariant.Flat, ThemeColor.Success ) => ElementClass.Empty()
                 .Add( ElementClass.Empty()
-                    .Add( "bg-success-50" )
-                    .Add( "text-success-600" )
-                    .Add( "hover:bg-success-100" )
-                    .Add( "group-data-[focus=true]:bg-success-50" ), when: slot is nameof( _trigger ) )
-                .Add( "text-success-600", when: slot is nameof( _value ) )
-                .Add( "text-success-600", when: slot is nameof( _label ) ),
+					.Add( "bg-success/20" )
+					.Add( "group-hover:bg-success/10" )
+					.Add( "group-data-[focus=true]:bg-success/10" ), when: slot is nameof( _trigger ) )
+                .Add( "text-success-700 dark:text-success", when: slot is nameof( _value ) )
+                .Add( "text-success-700 dark:text-success", when: slot is nameof( _label ) ),
 
             (InputVariant.Flat, ThemeColor.Warning ) => ElementClass.Empty()
                 .Add( ElementClass.Empty()
-                    .Add( "bg-warning-50" )
-                    .Add( "text-warning-600" )
-                    .Add( "hover:bg-warning-100" )
-                    .Add( "group-data-[focus=true]:bg-warning-50" ), when: slot is nameof( _trigger ) )
-                .Add( "text-warning", when: slot is nameof( _value ) )
-                .Add( "text-warning", when: slot is nameof( _label ) ),
+					.Add( "bg-warning/20" )
+					.Add( "group-hover:bg-warning/10" )
+					.Add( "group-data-[focus=true]:bg-warning/10" ), when: slot is nameof( _trigger ) )
+                .Add( "text-warning-700 dark:text-warning", when: slot is nameof( _value ) )
+                .Add( "text-warning-700 dark:text-warning", when: slot is nameof( _label ) ),
 
             (InputVariant.Flat, ThemeColor.Danger ) => ElementClass.Empty()
                 .Add( ElementClass.Empty()
-                    .Add( "bg-danger-50" )
-                    .Add( "text-danger-600" )
-                    .Add( "hover:bg-danger-100" )
-                    .Add( "group-data-[focus=true]:bg-danger-50" ), when: slot is nameof( _trigger ) )
-                .Add( "text-danger", when: slot is nameof( _value ) )
-                .Add( "text-danger", when: slot is nameof( _label ) ),
+					.Add( "bg-danger/20" )
+					.Add( "group-hover:bg-danger/10" )
+					.Add( "group-data-[focus=true]:bg-danger/10" ), when: slot is nameof( _trigger ) )
+                .Add( "text-danger-700 dark:text-danger-500", when: slot is nameof( _value ) )
+                .Add( "text-danger-700 dark:text-danger-500", when: slot is nameof( _label ) ),
 
             (InputVariant.Flat, ThemeColor.Info ) => ElementClass.Empty()
                 .Add( ElementClass.Empty()
-                    .Add( "bg-info-50" )
-                    .Add( "text-info-600" )
-                    .Add( "hover:bg-info-100" )
-                    .Add( "group-data-[focus=true]:bg-info-50" ), when: slot is nameof( _trigger ) )
-                .Add( "text-info", when: slot is nameof( _value ) )
-                .Add( "text-info", when: slot is nameof( _label ) ),
+					.Add( "bg-info/20" )
+					.Add( "group-hover:bg-info/10" )
+					.Add( "group-data-[focus=true]:bg-info/10" ), when: slot is nameof( _trigger ) )
+                .Add( "text-info dark:text-info-500", when: slot is nameof( _value ) )
+                .Add( "text-info dark:text-info-500", when: slot is nameof( _label ) ),
 
             // underlined / color
 
@@ -515,7 +507,7 @@ internal class Select
             // outside / size
 
             (LabelPlacement.Outside, Size.Small ) => ElementClass.Empty()
-                .Add( "justify-end has-[label]:mt-[calc(theme(fontSize.small)_+_8px)]", when: slot is nameof( _base ) )
+                .Add( "justify-end has-[label]:mt-[calc(var(--text-small)_+_8px)]", when: slot is nameof( _base ) )
                 .Add( ElementClass.Empty()
                     .Add( "text-tiny" )
                     .Add( "z-20" )
@@ -523,10 +515,10 @@ internal class Select
                     .Add( "start-2" )
                     .Add( "-translate-y-1/2" )
                     .Add( "group-data-[filled=true]:start-0" )
-                    .Add( "group-data-[filled=true]:-translate-y-[calc(100%_+_theme(fontSize.tiny)/2_+_16px)]" ), when: slot is nameof( _label ) ),
+                    .Add( "group-data-[filled=true]:-translate-y-[calc(100%_+_var(--text-tiny)/2_+_16px)]" ), when: slot is nameof( _label ) ),
 
             (LabelPlacement.Outside, Size.Medium ) => ElementClass.Empty()
-                .Add( "justify-end has-[label]:mt-[calc(theme(fontSize.small)_+_10px)]", when: slot is nameof( _base ) )
+                .Add( "justify-end has-[label]:mt-[calc(var(--text-small)_+_10px)]", when: slot is nameof( _base ) )
                 .Add( ElementClass.Empty()
                     .Add( "text-small" )
                     .Add( "z-20" )
@@ -534,10 +526,10 @@ internal class Select
                     .Add( "start-3" )
                     .Add( "-translate-y-1/2" )
                     .Add( "group-data-[filled=true]:start-0" )
-                    .Add( "group-data-[filled=true]:-translate-y-[calc(100%_+_theme(fontSize.small)/2_+_20px)]" ), when: slot is nameof( _label ) ),
+                    .Add( "group-data-[filled=true]:-translate-y-[calc(100%_+_var(--text-small)/2_+_20px)]" ), when: slot is nameof( _label ) ),
 
             (LabelPlacement.Outside, Size.Large ) => ElementClass.Empty()
-                .Add( "justify-end has-[label]:mt-[calc(theme(fontSize.small)_+_12px)]", when: slot is nameof( _base ) )
+                .Add( "justify-end has-[label]:mt-[calc(var(--text-small)_+_12px)]", when: slot is nameof( _base ) )
                 .Add( ElementClass.Empty()
                     .Add( "text-medium" )
                     .Add( "z-20" )
@@ -545,7 +537,7 @@ internal class Select
                     .Add( "start-3" )
                     .Add( "-translate-y-1/2" )
                     .Add( "group-data-[filled=true]:start-0" )
-                    .Add( "group-data-[filled=true]:-translate-y-[calc(100%_+_theme(fontSize.small)/2_+_24px)]" ), when: slot is nameof( _label ) ),
+                    .Add( "group-data-[filled=true]:-translate-y-[calc(100%_+_var(--text-small)/2_+_24px)]" ), when: slot is nameof( _label ) ),
 
             _ => ElementClass.Empty()
         };
@@ -559,35 +551,35 @@ internal class Select
             // size / flat
 
             (Size.Small, InputVariant.Flat ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.tiny)/2_-_8px)]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-tiny)/2_-_8px)]", when: slot is nameof( _label ) ),
 
             (Size.Medium, InputVariant.Flat ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_6px)]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-small)/2_-_6px)]", when: slot is nameof( _label ) ),
 
             (Size.Large, InputVariant.Flat ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_8px)]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-small)/2_-_8px)]", when: slot is nameof( _label ) ),
 
             // size / outlined
 
             (Size.Small, InputVariant.Outlined ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.tiny)/2_-_8px_-_theme(borderWidth.2))]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-tiny)/2_-_8px_-_--spacing(0.5))]", when: slot is nameof( _label ) ),
 
             (Size.Medium, InputVariant.Outlined ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_6px_-_theme(borderWidth.2))]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-small)/2_-_6px_-_--spacing(0.5))]", when: slot is nameof( _label ) ),
 
             (Size.Large, InputVariant.Outlined ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_8px_-_theme(borderWidth.2))]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-small)/2_-_8px_-_--spacing(0.5))]", when: slot is nameof( _label ) ),
 
             // size / underlined
 
             (Size.Small, InputVariant.Underlined ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.tiny)/2_-_5px)]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-tiny)/2_-_5px)]", when: slot is nameof( _label ) ),
 
             (Size.Medium, InputVariant.Underlined ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_3.5px)]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-small)/2_-_3.5px)]", when: slot is nameof( _label ) ),
 
             (Size.Large, InputVariant.Underlined ) => ElementClass.Empty()
-                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_theme(fontSize.small)/2_-_4px)]", when: slot is nameof( _label ) ),
+                .Add( "group-data-[filled=true]:-translate-y-[calc(50%_+_var(--text-small)/2_-_4px)]", when: slot is nameof( _label ) ),
 
             _ => ElementClass.Empty()
         };
@@ -599,15 +591,19 @@ internal class Select
         return variant switch
         {
             InputVariant.Flat => ElementClass.Empty()
-                .Add( "bg-danger-50 hover:bg-danger-100 group-data-[focus=true]:bg-danger-50", when: slot is nameof( _trigger ) ),
+                .Add( "bg-danger/20 group-hover:bg-danger/10 group-data-[focus=true]:bg-danger/10", when: slot is nameof( _trigger ) )
+				// For a better accessibility
+				.Add( "text-danger-700! dark:text-danger-500!", when: slot is nameof( _label ) )
+				.Add( "text-danger-700! dark:text-danger-500!", when: slot is nameof( _value ) )
+				.Add( "text-danger-700! dark:text-danger-500!", when: slot is nameof( _selectorIcon ) ),
 
             InputVariant.Outlined => ElementClass.Empty()
-                .Add( "!border-danger group-data-[focus=true]:border-danger", when: slot is nameof( _trigger ) ),
+                .Add( "border-danger group-data-[focus=true]:border-danger", when: slot is nameof( _trigger ) ),
 
             InputVariant.Underlined => ElementClass.Empty()
                 .Add( "after:bg-danger", when: slot is nameof( _trigger ) ),
 
             _ => ElementClass.Empty()
-        };
+		};
     }
 }

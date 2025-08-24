@@ -13,12 +13,12 @@ public class Navigation
     }
 }
 
-public class NavigationCategory( string name, string icon )
+public class NavigationCategory( string name, string? icon = null )
 {
     private readonly List<NavigationItem> _items = [];
 
     public string Name { get; } = name;
-    public string Icon { get; } = icon;
+    public string? Icon { get; } = icon;
     public IEnumerable<NavigationItem> Items => _items.AsEnumerable();
 
     public NavigationCategory Add( NavigationItem item )
@@ -28,8 +28,8 @@ public class NavigationCategory( string name, string icon )
     }
 }
 
-public class NavigationItem( string name, ComponentStatus? status = null )
+public class NavigationItem( string name, PageStatus? status = null )
 {
     public string Name { get; } = name;
-    public ComponentStatus? Status { get; } = status;
+    public PageStatus? Status { get; } = status;
 }

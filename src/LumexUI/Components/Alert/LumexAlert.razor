@@ -1,0 +1,78 @@
+﻿@namespace LumexUI
+@inherits LumexComponentBase
+
+@using S = AlertSlots;
+
+@if( Visible )
+{
+    <LumexComponent As="@As"
+                    Class="@GetStyles( nameof( S.Base ) )"
+                    Style="@Style"
+                    role="alert"
+                    title="@Title"
+                    data-slot="base"
+                    @attributes="@AdditionalAttributes">
+        @StartContent
+
+        <div class="@GetStyles( nameof( S.IconWrapper ) )" data-slot="icon-wrapper">
+            @if( IconContent is not null )
+            {
+                @IconContent
+            }
+            else
+            {
+                <DynamicIcon Type="@Icon"
+                             class="@GetStyles( nameof( S.Icon ) )"
+                             data-slot="alert-icon" />
+            }
+        </div>
+
+        <div class="@GetStyles( nameof( S.MainWrapper ) )" data-slot="main-wrapper">
+            @if( HasTitle )
+            {
+                <div class="@GetStyles( nameof( S.Title ) )" data-slot="title">
+                    @if( TitleContent is not null )
+                    {
+                        @TitleContent
+                    }
+                    else
+                    {
+                        @Title
+                    }
+                </div>
+            }
+
+            @if( HasDescription )
+            {
+                <div class="@GetStyles( nameof( S.Description ) )" data-slot="description">
+                    @if( DescriptionContent is not null )
+                    {
+                        @DescriptionContent
+                    }
+                    else
+                    {
+                        @Description
+                    }
+                </div>
+            }
+
+            @ChildContent
+        </div>
+
+        @EndContent
+
+        @if( Closeable || OnClose.HasDelegate )
+        {
+            <LumexButton Size="@Size.Small"
+                         Radius="@Radius.Full"
+                         Variant="@Common.Variant.Light"
+                         Color="@Color"
+                         Class="@GetStyles( nameof( S.CloseButton ) )"
+                         OnClick="@OnCloseAsync"
+                         data-slot="close-button"
+                         aria-label="Close">
+                <XIcon Size="20" />
+            </LumexButton>
+        }
+    </LumexComponent>
+}

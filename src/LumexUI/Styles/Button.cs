@@ -17,17 +17,16 @@ internal class Button
 		.Add( "items-center" )
 		.Add( "justify-center" )
 		.Add( "min-w-max" )
-		.Add( "text-medium" )
 		.Add( "font-normal" )
 		.Add( "appearance-none" )
-		.Add( "outline-none" )
 		.Add( "select-none" )
 		.Add( "whitespace-nowrap" )
 		.Add( "subpixel-antialiased" )
 		.Add( "overflow-hidden" )
+		.Add( "cursor-pointer" )
 		.Add( "active:scale-[0.97]" )
 		// transition
-		.Add( "transition-transform-colors-opacity" )
+		.Add( "transition-colors-transform-opacity" )
 		.Add( "motion-reduce:transition-none" )
 		// focus ring
 		.Add( Utils.FocusVisible )
@@ -45,9 +44,9 @@ internal class Button
 	private static ElementClass GetSizeStyles( Size size )
 	{
 		return ElementClass.Empty()
-			.Add( "min-w-16 h-8 px-3 gap-2 text-small rounded-small", when: size is Size.Small )
-			.Add( "min-w-20 h-10 px-4 gap-2 text-medium rounded-medium", when: size is Size.Medium )
-			.Add( "min-w-24 h-12 px-6 gap-2 text-large rounded-large", when: size is Size.Large );
+			.Add( "min-w-16 h-8 px-3 gap-2 text-tiny rounded-small", when: size is Size.Small )
+			.Add( "min-w-20 h-10 px-4 gap-2 text-small rounded-medium", when: size is Size.Medium )
+			.Add( "min-w-24 h-12 px-6 gap-2 text-medium rounded-large", when: size is Size.Large );
 	}
 
 	private static ElementClass GetRadiusStyles( Radius radius )
@@ -56,7 +55,8 @@ internal class Button
 			.Add( "rounded-none", when: radius is Radius.None )
 			.Add( "rounded-small", when: radius is Radius.Small )
 			.Add( "rounded-medium", when: radius is Radius.Medium )
-			.Add( "rounded-large", when: radius is Radius.Large );
+			.Add( "rounded-large", when: radius is Radius.Large )
+			.Add( "rounded-full", when: radius is Radius.Full );
 	}
 
 	private static ElementClass GetVariantStyles( Variant variant )
@@ -83,13 +83,13 @@ internal class Button
 		return variant switch
 		{
 			Variant.Light => ElementClass.Empty()
-				.Add( "hover:bg-default-200", when: color is ThemeColor.Default )
-				.Add( "hover:bg-primary-100", when: color is ThemeColor.Primary )
-				.Add( "hover:bg-secondary-100", when: color is ThemeColor.Secondary )
-				.Add( "hover:bg-success-100", when: color is ThemeColor.Success )
-				.Add( "hover:bg-warning-100", when: color is ThemeColor.Warning )
-				.Add( "hover:bg-danger-100", when: color is ThemeColor.Danger )
-				.Add( "hover:bg-info-100", when: color is ThemeColor.Info ),
+				.Add( "hover:bg-default/40", when: color is ThemeColor.Default )
+				.Add( "hover:bg-primary/20", when: color is ThemeColor.Primary )
+				.Add( "hover:bg-secondary/20", when: color is ThemeColor.Secondary )
+				.Add( "hover:bg-success/20", when: color is ThemeColor.Success )
+				.Add( "hover:bg-warning/20", when: color is ThemeColor.Warning )
+				.Add( "hover:bg-danger/20", when: color is ThemeColor.Danger )
+				.Add( "hover:bg-info/20", when: color is ThemeColor.Info ),
 
 			Variant.Ghost => ElementClass.Empty()
 				.Add( "hover:!bg-default hover:!text-default-foreground", when: color is ThemeColor.Default )
@@ -105,6 +105,24 @@ internal class Button
 		};
 	}
 
+	private static ElementClass GetIconOnlyStyles( bool isIconOnly )
+	{
+		return ElementClass.Empty()
+			.Add( "px-0 !gap-0", when: isIconOnly is true )
+			.Add( "[&>svg]:max-w-8", when: isIconOnly is false );
+	}
+
+	private static ElementClass GetCompoundStyles( Size size )
+	{
+		return size switch
+		{
+			Size.Small => new ElementClass( "min-w-8 w-8 h-8" ),
+			Size.Medium => new ElementClass( "min-w-10 w-10 h-10" ),
+			Size.Large => new ElementClass( "min-w-12 w-12 h-12" ),
+			_ => ElementClass.Empty()
+		};
+	}
+
 	public static string GetStyles( LumexButton button )
 	{
 		return ElementClass.Empty()
@@ -114,8 +132,10 @@ internal class Button
 			.Add( GetSizeStyles( button.Size ) )
 			.Add( GetRadiusStyles( button.Radius ) )
 			.Add( GetVariantStyles( button.Variant ) )
+			.Add( GetIconOnlyStyles( button.IconOnly ) )
 			.Add( GetColorStyles( button.Variant, button.Color ) )
 			.Add( GetHoverStyles( button.Variant, button.Color ) )
+			.Add( GetCompoundStyles( button.Size ), when: button.IconOnly )
 			.Add( button.Class )
 			.ToString();
 	}

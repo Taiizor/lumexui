@@ -1,0 +1,175 @@
+﻿@page "/docs/components/avatar"
+@layout DocsContentLayout
+
+@using LumexUI.Docs.Client.Pages.Components.Avatar.PreviewCodes
+
+<DocsCompositionSection Components="@_compositionComponents" />
+
+<DocsSection Title="Usage">
+    <Usage />
+
+    <DocsSection Title="Bordered">
+        <p>Use the <code>Bordered</code> parameter to add the border around the avatar.</p>
+        <Bordered />
+    </DocsSection>
+
+    <DocsSection Title="Sizes">
+        <p>Use the <code>Size</code> parameter to set the size of the avatar.</p>
+        <Sizes />
+    </DocsSection>
+
+    <DocsSection Title="Radius">
+        <p>Use the <code>Radius</code> parameter to set the border radius of the avatar.</p>
+        <Radii />
+    </DocsSection>
+
+    <DocsSection Title="Colors">
+        <p>Use the <code>Color</code> parameter to set the color of the avatar.</p>
+        <Colors />
+    </DocsSection>
+
+    <DocsSection Title="Fallbacks">
+        <p>When an image fails to load, a default fallback is displayed. There are 2 types of fallbacks:</p>
+        <ul>
+            <li>If a <code>Name</code> is provided, it is used to generate initials.</li>
+            <li>If no <code>Name</code> is provided, a default avatar icon is displayed.</li>
+        </ul>
+        <p>If the <code>ShowFallback</code> parameter is set to <code>false</code>, fallbacks will not be displayed.</p>
+        <Fallbacks />
+    </DocsSection>
+
+    <DocsSection Title="Custom fallback">
+        <p>Use the <code>FallbackContent</code> parameter to set a custom fallback for the avatar.</p>
+        <CustomFallback />
+    </DocsSection>
+
+    <DocsSection Title="Custom initials">
+        <p>
+            By default, initials are created by combining the first characters of each word in the <code>Name</code> parameter.
+            This logic can be customized by passing a function to the <code>Initials</code> parameter.
+        </p>
+    </DocsSection>
+</DocsSection>
+
+<DocsSection Title="Avatar group">
+    <GroupUsage />
+
+    <DocsSection Title="Max count">
+        <p>Use the <code>Max</code> parameter to limit the number of avatars of the avatar group.</p>
+        <GroupMaxCount />
+    </DocsSection>
+
+    <DocsSection Title="Custom count">
+        <p>Use the <code>CountContent</code> parameter to customize the counter of the avatar group.</p>
+        <GroupCustomCount />
+    </DocsSection>
+
+    <DocsSection Title="Grid">
+        <p>Use the <code>Grid</code> parameter to display the avatar group in a grid layout.</p>
+        <GroupGrid />
+    </DocsSection>
+</DocsSection>
+
+<DocsSection Title="Custom styles">
+    <p>
+        This component suppots named slots (represented as <code>data-*</code> attributes) that
+        allow you to apply custom CSS to specific parts of the component.
+    </p>
+    @foreach( var (componentName, slots) in _slots )
+    {
+        <h4>@componentName</h4>
+        <ul>
+            @foreach( var slot in slots )
+            {
+                <li>
+                    <strong class="text-orange-500 dark:text-orange-400">@slot.Name:</strong> @slot.Description
+                </li>
+            }
+        </ul>
+    }
+    <p>
+        You can customize the component(s) by passing
+        any Tailwind CSS classes to the following component parameters:
+    </p>
+
+    <div>
+        <h4 class="font-semibold">Avatar</h4>
+        <ul>
+            <li><code>Class</code>: The CSS class names to style the avatar wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the avatar slots.</li>
+        </ul>
+
+        <h4 class="font-semibold">Avatar Group</h4>
+        <ul>
+            <li><code>Class</code>: The CSS class names to style the avatar group wrapper.</li>
+            <li><code>Classes</code>: The CSS class names to style the avatar group slots.</li>
+            <li><code>AvatarClasses</code>: The CSS class names to style the avatars slots.</li>
+        </ul>
+    </div>
+    <CustomStyles />
+</DocsSection>
+
+<DocsApiSection Components="@_apiComponents" />
+
+@code {
+    [CascadingParameter] private DocsContentLayout Layout { get; set; } = default!;
+
+    private readonly CompositionComponent[] _compositionComponents = new CompositionComponent[]
+    {
+        new(nameof(LumexAvatar), "A component that represents an avatar."),
+        new(nameof(LumexAvatarGroup), "A component that represents a group of avatars.")
+    };
+
+    private readonly Heading[] _headings = new Heading[]
+    {
+        new("Composition"),
+        new("Usage", [
+            new("Bordered"),
+            new("Sizes"),
+            new("Radius"),
+            new("Colors"),
+            new("Fallbacks"),
+            new("Custom fallback"),
+            new("Custom initials"),
+        ]),
+        new("Avatar group", [
+            new("Max count"),
+            new("Custom count"),
+            new("Grid")
+        ]),
+        new("Custom styles"),
+        new("API")
+    };
+
+    private readonly Dictionary<string, Slot[]> _slots = new()
+    {
+        [nameof(LumexAvatar)] = [
+            new(nameof(AvatarSlots.Base), "The main container for the avatar component."),
+            new(nameof(AvatarSlots.Img), "The slot that holds the avatar image."),
+            new(nameof(AvatarSlots.Fallback), "Displays when the image is unavailable, showing initials or an icon."),
+            new(nameof(AvatarSlots.Name), "Represents the text or initials displayed inside the avatar."),
+            new(nameof(AvatarSlots.Icon), "The slot for a custom fallback icon when no image is provided.")
+        ],
+        [nameof(LumexAvatarGroup)] = [
+            new(nameof(AvatarGroupSlots.Base), "The main container for the avatar group."),
+            new(nameof(AvatarGroupSlots.Count), "Displays the number of hidden avatars when the max limit is reached.")
+        ]
+    };
+
+    private readonly string[] _apiComponents = new string[]
+    {
+        nameof(LumexAvatar),
+        nameof(LumexAvatarGroup)
+    };
+
+    protected override void OnInitialized()
+    {
+        Layout.Initialize(
+            title: "Avatar",
+            category: "Components",
+            description: "Avatars represent a user or entity using an image, initials, or a fallback icon.",
+            headings: _headings,
+            linksProps: new ComponentLinksProps( "Avatar", isServer: false )
+        );
+    }
+}

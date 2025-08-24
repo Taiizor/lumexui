@@ -12,12 +12,15 @@
             var componentPathSegment = component.Replace( "Lumex", "" ).SplitPascalCase().ToKebabCase();
 
             <li>
-                <LumexLink Href="@($"{NavigationManager.BaseUri}docs/api/{componentPathSegment}")"
-                           Class="border-none text-orange-500 text-xs font-normal not-prose">
-                    <span class="px-1 py-0.5 rounded-md ring-1 ring-orange-200 bg-orange-50">
+                <LumexChip Size="@Size.Small"
+                           Radius="@Radius.Small"
+                           Variant="@ChipVariant.Flat"
+                           Class="not-prose bg-default-50 ring ring-default-900/10">
+                    <LumexLink Href="@($"{NavigationManager.BaseUri}docs/api/{componentPathSegment}")"
+                               Class="font-mono text-orange-600 dark:text-orange-400">
                         @($"<{component} />")
-                    </span>
-                </LumexLink>
+                    </LumexLink>
+                </LumexChip>
             </li>
         }
     </ul>

@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 
 using LumexUI.Motion.Extensions;
 using LumexUI.Services;
-using LumexUI.Utilities;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,7 +29,7 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddTwMerge();
 		services.AddLumexMotion();
-		services.AddPopoverService();
+		services.AddThemeService();
 	}
 
 	/// <summary>
@@ -42,7 +41,7 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddTwMerge( options );
 		services.AddLumexMotion();
-		services.AddPopoverService();
+		services.AddThemeService();
 	}
 
 	private static void AddTwMerge( this IServiceCollection services )
@@ -69,8 +68,8 @@ public static class ServiceCollectionExtensions
 		services.Configure( options );
 	}
 
-	private static void AddPopoverService( this IServiceCollection services )
+	private static void AddThemeService( this IServiceCollection services )
 	{
-		services.AddScoped<IPopoverService, PopoverService>();
+		services.AddScoped<ThemeService>();
 	}
 }

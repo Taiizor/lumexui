@@ -13,7 +13,7 @@
             @{
                 _context.StopCollectingTabs();
             }
-            <div class="@Slots.Root" data-slot="base">
+            <div class="@Slots.Base" data-slot="base">
                 <LumexComponent As="@As"
                                 Class="@Slots.TabList"
                                 Style="@Style"
@@ -29,12 +29,12 @@
 </CascadingValue>
 
 @code {
-    private void RenderTabs(RenderTreeBuilder __builder)
+    private void RenderTabs( RenderTreeBuilder __builder )
     {
         <LayoutGroup Id="@_layoutGroupId">
-            @foreach (var (id, tab) in _context.Tabs)
+            @foreach( var (id, tab) in _context.Tabs )
             {
-                tab.Render(__builder2);
+                tab.Render( __builder2 );
             }
         </LayoutGroup>
     }

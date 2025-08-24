@@ -3,11 +3,6 @@
 
 @using LumexUI.Docs.Client.Pages.Components.Navbar.PreviewCodes
 
-<Callout Variant="@CalloutVariant.Warning">
-    This webpage may load slower than usual due to examples
-    embedded into the <Code>iframe</Code> elements, which increases load times.
-</Callout>
-
 <DocsCompositionSection Components="@_compositionComponents" />
 
 <DocsSection Title="Usage">
@@ -73,8 +68,8 @@
     <div>
         <h4 class="font-semibold">Navbar</h4>
         <ul>
-            <li><Code>Class</Code>: The CSS class name that styles the wrapper of the navbar.</li>
-            <li><Code>Classes</Code>: The CSS class names for the navbar slots that style entire navbar.</li>
+            <li><code>Class</code>: The CSS class name that styles the wrapper of the navbar.</li>
+            <li><code>Classes</code>: The CSS class names for the navbar slots that style entire navbar.</li>
         </ul>
     </div>
     <CustomStyles />
@@ -113,7 +108,7 @@
 
     private readonly Slot[] _slots = new Slot[]
     {
-        new(nameof(NavbarSlots.Root), "The overall container of the navbar."),
+        new(nameof(NavbarSlots.Base), "The overall container of the navbar."),
         new(nameof(NavbarSlots.Wrapper), "The container of all elements, providing a layout structure."),
         new(nameof(NavbarSlots.Brand), "The container of the brand content, such as a logo or application name."),
         new(nameof(NavbarSlots.Content), "The container of the main navigation items and links."),
@@ -135,8 +130,7 @@
         nameof(LumexNavbarMenuToggle),
         nameof(LumexLink),
         nameof(LumexButton),
-        nameof(LumexTextbox),
-        nameof(LumexIcon),
+        nameof(LumexTextbox)
     };
 
     protected override void OnInitialized()

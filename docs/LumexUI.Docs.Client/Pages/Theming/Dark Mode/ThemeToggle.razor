@@ -1,0 +1,25 @@
+﻿@using LumexUI.Shared.Icons
+
+@inject ThemeService ThemeService
+
+<LumexDropdown Placement="@PopoverPlacement.BottomEnd"
+               Class="min-w-32">
+    <LumexDropdownTrigger>
+        <LumexButton Variant="@Variant.Outlined"
+                     Class="min-w-10 w-10 h-10 p-0">
+            <MoonIcon Size="20" class="hidden dark:block" />
+            <SunIcon Size="20" class="dark:hidden" />
+        </LumexButton>
+    </LumexDropdownTrigger>
+    <LumexDropdownMenu Variant="@MenuVariant.Flat">
+        <LumexDropdownItem OnClick="@(async () => await ThemeService.SetThemeAsync( Theme.Light ))">
+            Light
+        </LumexDropdownItem>
+        <LumexDropdownItem OnClick="@(async () => await ThemeService.SetThemeAsync( Theme.Dark ))">
+            Dark
+        </LumexDropdownItem>
+        <LumexDropdownItem OnClick="@(async () => await ThemeService.SetThemeAsync( Theme.System ))">
+            System
+        </LumexDropdownItem>
+    </LumexDropdownMenu>
+</LumexDropdown>

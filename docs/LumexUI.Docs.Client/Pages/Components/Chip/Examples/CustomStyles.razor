@@ -1,0 +1,12 @@
+﻿<LumexChip Variant="@ChipVariant.Shadow"
+           Classes="@_classes">
+    New
+</LumexChip>
+
+@code {
+    private ChipSlots _classes = new()
+    {
+        Base = "bg-linear-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+        Content = "drop-shadow-xs shadow-black text-white"
+    };
+}

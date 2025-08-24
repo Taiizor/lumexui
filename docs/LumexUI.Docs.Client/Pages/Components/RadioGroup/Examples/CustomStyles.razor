@@ -1,47 +1,44 @@
-﻿<LumexRadioGroup Label="Choose your preferred meal"
-                 Classes="@_groupSlots"
-                 RadioClasses="@_radioClasses" 
-                 @bind-Value="@_chosenFood">
+﻿@using LumexUI.Shared.Icons
+
+<LumexRadioGroup Label="Choose your preferred meal"
+                 RadioClasses="@_radioClasses"
+                 @bind-Value="@_value">
     <LumexRadio Value="@("Kebab")">
         <div class="flex items-center gap-4">
-            <LumexIcon Icon="@Icons.Rounded.KebabDining"
-                       Size="@new("32")" />
+            <BeefIcon Size="32" />
             <div>
-                <div class="font-semibold">Chicken Kebab</div>
-                <p class="text-sm text-primary">$11.99</p>
+                <div class="font-medium">Steak</div>
+                <p class="text-sm text-primary">$39.99</p>
             </div>
         </div>
     </LumexRadio>
 
     <LumexRadio Value="@("Ramen")">
         <div class="flex items-center gap-4">
-            <LumexIcon Icon="@Icons.Rounded.RamenDining"
-                       Size="@new("32")" />
+            <SoupIcon Size="32" />
             <div>
-                <div class="font-semibold">Ramen Bowl</div>
-                <p class="text-sm text-primary">$12.99</p>
+                <div class="font-medium">Soup</div>
+                <p class="text-small text-primary">$18.99</p>
             </div>
         </div>
     </LumexRadio>
 
     <LumexRadio Value="@("Pizza")">
         <div class="flex items-center gap-4">
-            <LumexIcon Icon="@Icons.Rounded.LocalPizza"
-                       Size="@new("32")" />
+            <PizzaIcon Size="32" />
             <div>
-                <div class="font-semibold">Pizza</div>
-                <p class="text-sm text-primary">$5.99</p>
+                <div class="font-medium">Pizza</div>
+                <p class="text-small text-primary">$15.99</p>
             </div>
         </div>
     </LumexRadio>
 
     <LumexRadio Value="@("Nothing")">
         <div class="flex items-center gap-4">
-            <LumexIcon Icon="@Icons.Rounded.NoFood"
-                       Size="@new("32")" />
+            <CircleSlashIcon Size="32" />
             <div>
-                <div class="font-semibold">No Food</div>
-                <p class="text-sm text-primary">No Cost</p>
+                <div class="font-medium">No Food</div>
+                <p class="text-small text-primary">No Cost</p>
             </div>
         </div>
     </LumexRadio>
@@ -49,21 +46,14 @@
 
 @code
 {
-    private string? _chosenFood;
-
-    private RadioGroupSlots _groupSlots = new()
-    {
-        Label = "text-neutral-700 font-medium"
-    };
+    private string? _value;
 
     private RadioSlots _radioClasses = new()
     {
-        Root = ElementClass.Empty()
-            .Add("inline-flex m-0 bg-surface1 hover:bg-surface2 items-center justify-between")
-            .Add("flex-row-reverse max-w-[300px] rounded-lg gap-4 p-4 border-2 border-default-200")
-            .Add("data-[selected=true]:border-primary")
-            .Add("data-[selected=true]:bg-primary-100/25")
-            .Add("transition-colors")
-            .ToString()
+        Base = ElementClass.Empty()
+            .Add( "m-0 justify-between bg-surface1 hover:bg-surface2" )
+            .Add( "flex-row-reverse max-w-sm rounded-lg p-4 border-2 border-default-200" )
+            .Add( "data-[selected=true]:border-primary data-[selected=true]:bg-primary/10" )
+            .Add( "transition-colors" )
     };
 }
