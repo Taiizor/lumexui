@@ -1,3 +1,7 @@
+<p align="center">
+  <img height="150" src="docs/LumexUI.Docs/wwwroot/favicon.png" />
+</p>
+
 <h1 align="center">LumexUI</h1>
 
 <p align="center">
